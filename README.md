@@ -5,11 +5,11 @@ A local AI assistant. Indexes HTML, PDFs, plain text, and source code into pgvec
 ## Prerequisites
 
 - Rust (edition 2024)
-- Docker (for Postgres + pgvector)
+- Docker (for Postgres + pgvector, Ollama)
 - [just](https://github.com/casey/just)
 - [sqlx-cli](https://github.com/launchbadge/sqlx): `cargo install sqlx-cli`
 - [cargo-nextest](https://nexte.st): `cargo install cargo-nextest`
-- Ollama running on your Pi 5 with `qwen3-embedding:0.6b` pulled
+- [Ollama](https://ollama.com/search?c=embedding) running on your with your embedding model of choice pulled
 
 ## Setup
 
@@ -17,8 +17,7 @@ A local AI assistant. Indexes HTML, PDFs, plain text, and source code into pgvec
 cp .env.example .env
 # fill in OLLAMA_URL and ANTHROPIC_API_KEY
 
-just up           # start Postgres
-just run-migration  # apply schema
+just setup
 cargo build
 ```
 
@@ -54,7 +53,6 @@ Opens a two-pane TUI. Top pane shows conversation history and live tool call sta
 just test      # run tests with nextest
 just lint      # clippy -D warnings
 just coverage  # llvm-cov HTML report
-just serve     # bacon watch + run
 ```
 
 ## Architecture
