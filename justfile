@@ -1,8 +1,11 @@
 export DATABASE_URL := "postgres://postgres:postgres@localhost:5432/sage"
 
+# Set up local dev database: start container + run migrations
+db: up run-migration
+
 # Start the Postgres container
 up:
-  docker compose up -d
+  docker compose up -d --wait
 
 # Stop the Postgres container
 down:

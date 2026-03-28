@@ -6,11 +6,14 @@ Work through these milestones in order. Each milestone should leave the binary i
 
 All module files, types, fn signatures, `todo!()` bodies, test stubs. `cargo build` + `cargo test --list` passes.
 
-## M2 — Infrastructure
+## M2 — Infrastructure :white_check_mark:
 
-- Implement `db::init_pool`, `run_migrations`, `chunk_exists`, `insert_chunk`
-- Implement `embedder::embed` (Ollama `/api/embed` call)
-- `docker compose up` → migrations run → embed a test string → row inserted
+- `DbConfig` struct (url, max_connections, connection_timeout)
+- `db::hash_content` — SHA-256 hex helper; callers compute hash before calling `chunk_exists`
+- `db::init_pool`, `run_migrations`, `chunk_exists`, `insert_chunk` (with `ON CONFLICT DO NOTHING` dedup)
+- `embedder::embed` — POST to Ollama `/api/embed`, returns `Vec<f32>` from `embeddings[0]`
+- `main.rs` wiring: reads `DATABASE_URL` / `OLLAMA_URL` env vars, builds pool + embedder, dispatches `Index` / `Chat`
+- DB integration tests: insert → exists, duplicate insert is a no-op, unknown hash returns false
 
 ## M3 — Document indexers (HTML + PDF + text)
 
