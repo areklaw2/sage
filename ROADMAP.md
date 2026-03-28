@@ -22,7 +22,7 @@ All modules, types, and fn signatures exist with `todo!()` bodies. `cargo build`
 `scraper` parses HTML into a typed tree and lets you select nodes with CSS selectors (`.select("h2, h3")`). The strategy: iterate all nodes in document order, track the "current section" heading, accumulate text content until the next heading, emit a chunk. Tables should be emitted as a single chunk regardless of length — select `table` nodes and capture their full `.text()` before the heading-boundary logic runs. Look up: `scraper::Html::parse_document`, `scraper::Selector`, `ElementRef::text()`.
 
 ```
-parse_html(source: &str, html: &str) -> Vec<HtmlChunk>
+index_html(source: &str, html: &str) -> Vec<HtmlChunk>
 ```
 
 **PDF — `indexer/pdf.rs`**
