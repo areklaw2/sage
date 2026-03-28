@@ -15,5 +15,19 @@ services:
       retries: 5
     volumes:
       - pgdata:/var/lib/postgresql
+  ollama:
+    image: ollama/ollama
+    container_name: sage-ollama
+    ports:
+      - '11434:11434'
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ['CMD-SHELL', 'ollama list || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 volumes:
   pgdata:
+  ollama_data:

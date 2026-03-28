@@ -48,7 +48,7 @@ Required tools: `sqlx-cli` (`cargo install sqlx-cli`), `cargo-nextest` (`cargo i
 
 **TUI** (`src/tui.rs`): ratatui two-pane layout. Top pane: conversation + live tool status. Bottom pane: input bar. Agent runs as a separate tokio task; results arrive via `mpsc::Sender<UiEvent>`. Exit: `Ctrl+C` / `Ctrl+D`.
 
-**DB schema:** single `embeddings` table with HNSW index (`vector_cosine_ops`) on the `embedding` column (768 dimensions = `nomic-embed-text`).
+**DB schema:** single `embeddings` table with HNSW index (`vector_cosine_ops`) on the `embedding` column (1024 dimensions = `qwen3-embedding:0.6b`).
 
 ## Implementation state
 

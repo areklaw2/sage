@@ -1,40 +1,44 @@
 export DATABASE_URL := "postgres://postgres:postgres@localhost:5432/sage"
 
-# Set up local dev database: start container + run migrations
-db: up run-migration
+# Start containers, pull models, and run migrations
+setup: start pull-models migrate
 
-# Start the Postgres container
-up:
+# Start all containers (Postgres + Ollama)
+start:
   docker compose up -d --wait
 
-# Stop the Postgres container
-down:
+# Stop all containers
+stop:
   docker compose down
 
-# Run the CLI
+# Tear down containers and wipe all volumes (destructive — deletes all indexed data)
+reset:
+  docker compose down -v
+
+# Pull required Ollama embedding models
+pull-models:
+  docker compose exec ollama ollama pull qwen3-embedding:0.6b
+
+# Run pending database migrations
+migrate:
+  sqlx migrate run
+
+# Create a new migration file (e.g. just new-migration add-table)
+new-migration name:
+  sqlx migrate add {{name}}
+
+# Run the CLI with live reload
 serve:
   bacon run-long
 
-# Run tests
+# Run all tests
 test:
   cargo nextest run --all-features
 
-# Run tests with coverage
+# Run tests with HTML coverage report
 coverage:
   cargo llvm-cov --all-features --workspace --html && open target/llvm-cov/html/index.html
 
 # Lint with clippy
 lint:
   cargo clippy --all-targets --all-features -- -D warnings
-
-# Create the local database
-create-db:
-  sqlx database create
-
-# Create a new migration file (e.g. just create-migration add-table)
-create-migration name:
-  sqlx migrate add {{name}}
-
-# Apply pending migrations
-run-migration:
-  sqlx migrate run

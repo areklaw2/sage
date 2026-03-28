@@ -10,7 +10,7 @@ CREATE TABLE embeddings (
   line_end     INT,
   content      TEXT NOT NULL,
   content_hash TEXT NOT NULL,
-  embedding    vector(768),
+  embedding    vector(1024),
   created_at   TIMESTAMPTZ DEFAULT now()
 );
 

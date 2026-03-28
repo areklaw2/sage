@@ -55,19 +55,16 @@ mod tests {
     #[test]
     fn test_embedder_new_stores_fields() {
         let e = Embedder::new(
-            "http://192.168.1.1:11434".to_string(),
-            "nomic-embed-text".to_string(),
+            "http://localhost:11434".to_string(),
+            "qwen3-embedding:0.6b".to_string(),
         );
-        assert_eq!(e.base_url, "http://192.168.1.1:11434");
-        assert_eq!(e.model, "nomic-embed-text");
+        assert_eq!(e.base_url, "http://localhost:11434");
+        assert_eq!(e.model, "qwen3-embedding:0.6b");
     }
 
     #[tokio::test]
     async fn test_embed_bad_url_returns_error() {
-        let e = Embedder::new(
-            "http://127.0.0.1:1".to_string(),
-            "nomic-embed-text".to_string(),
-        );
+        let e = Embedder::new("localhost".to_string(), "qwen3-embedding:0.6b".to_string());
         assert!(e.embed("hello").await.is_err());
     }
 }

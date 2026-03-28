@@ -9,7 +9,7 @@ A local AI assistant. Indexes HTML, PDFs, plain text, and source code into pgvec
 - [just](https://github.com/casey/just)
 - [sqlx-cli](https://github.com/launchbadge/sqlx): `cargo install sqlx-cli`
 - [cargo-nextest](https://nexte.st): `cargo install cargo-nextest`
-- Ollama running on your Pi 5 with `nomic-embed-text` pulled
+- Ollama running on your Pi 5 with `qwen3-embedding:0.6b` pulled
 
 ## Setup
 
@@ -80,12 +80,12 @@ The agent communicates with the TUI via an `mpsc` channel of `UiEvent`s (token d
 
 ## Environment variables
 
-| Variable            | Description                                       |
-| ------------------- | ------------------------------------------------- |
-| `DATABASE_URL`      | Postgres connection string                        |
-| `OLLAMA_URL`        | Ollama base URL (e.g. `http://192.168.1.x:11434`) |
-| `ANTHROPIC_API_KEY` | Claude API key                                    |
-| `CLAUDE_MODEL`      | Model ID (default: `claude-sonnet-4-6`)           |
+| Variable            | Description                             |
+| ------------------- | --------------------------------------- |
+| `DATABASE_URL`      | Postgres connection string              |
+| `OLLAMA_URL`        | Ollama base URL                         |
+| `ANTHROPIC_API_KEY` | Claude API key                          |
+| `CLAUDE_MODEL`      | Model ID (default: `claude-sonnet-4-6`) |
 
 ## Roadmap
 

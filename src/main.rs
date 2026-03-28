@@ -23,7 +23,10 @@ async fn main() -> anyhow::Result<()> {
     let pool = db::init_pool(db_config).await?;
     db::run_migrations(&pool).await?;
 
-    let embedder = Embedder::new(std::env::var("OLLAMA_URL")?, "nomic-embed-text".to_string());
+    let embedder = Embedder::new(
+        std::env::var("OLLAMA_URL")?,
+        "qwen3-embedding:0.6b".to_string(),
+    );
 
     match cli.command {
         Commands::Index { source } => indexer::run(source, &pool, &embedder).await?,
