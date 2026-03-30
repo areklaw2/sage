@@ -28,8 +28,8 @@ sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls"] }
 tokio = { version = "1", features = ["full"] }
 tree-sitter = "0.26.7"
 tree-sitter-c = "0.24.1"
-tree-sitter-rust = "0.23"
+tree-sitter-rust = "0.24.2"
 walkdir = "2"
 
 [dev-dependencies]
-testcontainers = "0.23"
+testcontainers = "0.27.2"

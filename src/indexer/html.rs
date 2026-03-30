@@ -4,10 +4,10 @@ pub struct HtmlChunk {
     pub content: String,
 }
 
-/// Parse an HTML document and chunk it by <h2>/<h3> section boundaries.
+/// Index an HTML document and chunk it by <h2>/<h3> section boundaries.
 /// Tables are never split — they attach to the preceding section.
 /// The heading text is included at the start of each chunk.
-pub fn parse_html(source: &str, html: &str) -> Vec<HtmlChunk> {
+pub fn index_html(source: &str, html: &str) -> Vec<HtmlChunk> {
     todo!()
 }
 

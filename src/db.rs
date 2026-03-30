@@ -55,12 +55,20 @@ pub async fn chunk_exists(pool: &PgPool, source: &str, hash: &str) -> anyhow::Re
 
 pub async fn insert_chunk(pool: &PgPool, chunk: &Chunk) -> anyhow::Result<()> {
     let hash = hash_content(&chunk.content);
+
+    if chunk_exists(pool, &chunk.source, &hash).await? {
+        anyhow::bail!(
+            "chunk already exists for source '{}' with hash {}",
+            chunk.source,
+            &hash[..8]
+        );
+    }
+
     let embedding = chunk.embedding.as_ref().map(|v| Vector::from(v.clone()));
 
     sqlx::query(
     "INSERT INTO embeddings (source, file, section, fn_name, line_start, line_end, content, content_hash, embedding)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        ON CONFLICT (source, content_hash) DO NOTHING"
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)"
     )
     .bind(&chunk.source)
     .bind(&chunk.file)
@@ -161,17 +169,8 @@ mod tests {
         insert_chunk(&pool, &chunk).await.unwrap();
         assert!(chunk_exists(&pool, "test", &hash).await.unwrap());
 
-        // second insert is a no-op — no error, no duplicate
-        insert_chunk(&pool, &chunk).await.unwrap();
-        let count: (i64,) = sqlx::query_as(
-            "SELECT COUNT(*) FROM embeddings WHERE source = $1 AND content_hash = $2",
-        )
-        .bind("test")
-        .bind(&hash)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
-        assert_eq!(count.0, 1);
+        let err = insert_chunk(&pool, &chunk).await.unwrap_err();
+        assert!(err.to_string().contains("chunk already exists"));
     }
 
     #[tokio::test]
